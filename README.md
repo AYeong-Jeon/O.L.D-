@@ -2,13 +2,13 @@
 
 Wishing you a lovely day and <br>
 hoping that you get everything you wished for.
-<br>
+<br><br><br>
 
 ### Story 🧸
 The reason I create this site is to share what I like. <br>
 If you subscribe to the site, I'll send you a small gift every month. <br>
 If you’re curious, please subscribe! 📬
-<br>
+<br><br><br>
 
 ### Study📍
 <img src="https://img.shields.io/badge/java-007396?style=flat-square&logo=java&logoColor=white"/>
