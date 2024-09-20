@@ -1,10 +1,10 @@
-package com.oldty;
+package com.old;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OldtyApplicationTests {
+class OldApplicationTests {
 
     @Test
     void contextLoads() {

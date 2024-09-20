@@ -1,13 +1,13 @@
-package com.oldty;
+package com.old;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OldtyApplication {
+public class OldApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OldtyApplication.class, args);
+        SpringApplication.run(OldApplication.class, args);
     }
 
 }
