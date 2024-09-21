@@ -3,3 +3,22 @@ server:
   servlet:
     encoding:
       charset: UTF-8
+
+# jpa 설정
+spring:
+  application:
+    name: old
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    driver-class-name: ${DRIVER_CLASS_NAME}
+    url: jdbc:log4jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
