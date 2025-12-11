@@ -1,4 +1,6 @@
 server:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
   port: 8089
   servlet:
     encoding:
@@ -12,13 +14,14 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     driver-class-name: ${DRIVER_CLASS_NAME}
-    url: jdbc:log4jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    url: jdbc:log4jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
-  jpa:
-    show-sql: true
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-    properties:
-      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.old.dto
