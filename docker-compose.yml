@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:8.0
     container_name: ayeong-mysql
     restart: unless-stopped
     environment:
@@ -9,7 +9,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - '${MARIADB_PORT}:3306'
+      - '${MYSQL_PORT}:3306'
     networks:
       - springboot-network
     command:
