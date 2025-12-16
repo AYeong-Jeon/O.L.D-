@@ -1,13 +1,14 @@
 server:
-  jackson:
-    property-naming-strategy: SNAKE_CASE
   port: 8089
   servlet:
     encoding:
       charset: UTF-8
+  address: 0.0.0.0
 
 # jpa 설정
 spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
   application:
     name: old
   config:

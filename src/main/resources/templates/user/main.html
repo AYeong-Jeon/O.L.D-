@@ -1,10 +1,413 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <title>메인 페이지</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yummy Yummy</title>
+
+    <!-- 폰트(원하면 바꿔도 됨) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg: #fbf6ef;
+            --paper: #fffdf8;
+            --line: #d9c9b8;
+            --brand: #8b3a2b;     /* 붉은 브라운 */
+            --brand2:#a24b3c;
+            --text:#4a3b33;
+            --muted:#8a7b73;
+            --shadow: 0 14px 40px rgba(0,0,0,.10);
+            --radius: 22px;
+            --max: 980px;
+        }
+
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+            background: #eee;
+            color: var(--text);
+        }
+
+        /* 화면 전체 프레임(이미지처럼 라운드된 보드) */
+        .frame{
+            max-width: calc(var(--max) + 80px);
+            margin: 28px auto;
+            padding: 0 18px;
+        }
+        .board{
+            background: var(--paper);
+            border: 1px solid rgba(139,58,43,.25);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* 상단 네비 */
+        .topbar{
+            padding: 18px 22px 10px;
+            border-bottom: 1px solid rgba(139,58,43,.22);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap: 12px;
+        }
+        .brand-mini{
+            font-family: "Playfair Display", serif;
+            color: var(--brand);
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+        .nav{
+            display:flex;
+            gap: 38px;
+            align-items:center;
+            font-size: 12px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--brand);
+            opacity:.9;
+        }
+        .nav a{
+            color: inherit;
+            text-decoration:none;
+        }
+        .nav a:hover{ text-decoration: underline; }
+
+        .icons{
+            display:flex;
+            gap: 14px;
+            align-items:center;
+            color: var(--brand);
+        }
+        .icon-btn{
+            width: 28px; height: 28px;
+            display:grid; place-items:center;
+            border-radius: 999px;
+            border: 1px solid rgba(139,58,43,.18);
+            background: rgba(255,255,255,.6);
+        }
+        .icon-btn svg{ width: 16px; height: 16px; }
+
+        /* 히어로 */
+        .hero{
+            position: relative;
+            padding: 34px 22px 26px;
+            background: linear-gradient(#fffdf9, #fbf6ef);
+        }
+        .hero-inner{
+            max-width: var(--max);
+            margin: 0 auto;
+            text-align:center;
+            position: relative;
+        }
+
+        /* 큰 타이틀 타원 테두리 */
+        .oval-title{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap: 12px;
+            padding: 14px 56px;
+            border: 2px solid rgba(139,58,43,.95);
+            border-radius: 999px;
+            position: relative;
+        }
+        .oval-title::before{
+            content:"";
+            position:absolute;
+            inset: 6px;
+            border: 2px solid rgba(139,58,43,.55);
+            border-radius: 999px;
+            pointer-events:none;
+        }
+        .oval-title .star{
+            font-size: 12px;
+            color: var(--brand);
+            opacity:.85;
+            transform: translateY(-1px);
+        }
+        .oval-title h1{
+            margin:0;
+            font-family: "Playfair Display", serif;
+            font-size: 54px;
+            line-height: 1;
+            color: var(--brand);
+            letter-spacing: .02em;
+        }
+
+        .dessert-wrap{
+            margin-top: 22px;
+            position: relative;
+            display:grid;
+            place-items:center;
+        }
+        .dessert{
+            width: 210px;
+            max-width: 55vw;
+            filter: drop-shadow(0 16px 26px rgba(0,0,0,.10));
+        }
+
+        /* 장식(스파클/라인) */
+        .sparkles{
+            position:absolute;
+            inset: 0;
+            pointer-events:none;
+            opacity:.85;
+        }
+        .sparkles svg{
+            width:100%;
+            height:100%;
+        }
+
+        .hero-copy{
+            max-width: 640px;
+            margin: 20px auto 0;
+            font-size: 10px;
+            line-height: 1.55;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--brand);
+            opacity: .92;
+        }
+
+        /* 시즌 메뉴 섹션 */
+        .section{
+            background: #fff7eb;
+            border-top: 1px solid rgba(139,58,43,.12);
+            padding: 34px 22px 36px;
+        }
+        .section-inner{
+            max-width: var(--max);
+            margin: 0 auto;
+            text-align:center;
+        }
+        .section-title{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap: 18px;
+            color: var(--brand);
+            font-family: "Playfair Display", serif;
+            letter-spacing: .06em;
+            margin-bottom: 22px;
+        }
+        .section-title h2{
+            margin:0;
+            font-size: 26px;
+        }
+        .tiny-star{
+            width: 10px; height: 10px;
+            display:inline-block;
+            transform: rotate(20deg);
+            color: var(--brand2);
+        }
+
+        .menu-grid{
+            margin-top: 14px;
+            display:grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 26px 48px;
+            align-items:end;
+        }
+
+        .menu-item{
+            display:grid;
+            gap: 10px;
+            justify-items:center;
+            padding: 8px 10px;
+        }
+        .menu-item img{
+            width: 180px;
+            max-width: 44vw;
+            height: auto;
+            filter: drop-shadow(0 10px 18px rgba(0,0,0,.08));
+        }
+        .menu-item .name{
+            margin: 0;
+            font-size: 10px;
+            letter-spacing: .12em;
+            color: var(--brand);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        /* 로그인 버튼 */
+        .login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 8px 18px;
+            height: 32px;
+
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+
+            color: #8b3a2b;
+            background: rgba(255, 255, 255, 0.7);
+
+            border: 1.5px solid rgba(139, 58, 43, 0.7);
+            border-radius: 999px;
+
+            text-decoration: none;
+            cursor: pointer;
+
+            transition:
+                    background 0.2s ease,
+                    color 0.2s ease,
+                    box-shadow 0.2s ease,
+                    transform 0.1s ease;
+        }
+
+        .login-btn:hover {
+            background: #8b3a2b;
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(139, 58, 43, 0.35);
+        }
+
+        .login-btn:active {
+            transform: translateY(1px);
+        }
+
+        .login-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.25);
+        }
+
+        /* 반응형 */
+        @media (max-width: 640px){
+            .nav{ gap: 18px; font-size: 11px; }
+            .oval-title h1{ font-size: 40px; }
+            .oval-title{ padding: 12px 34px; }
+            .menu-grid{ grid-template-columns: 1fr; gap: 22px; }
+        }
+    </style>
 </head>
+
 <body>
-    <h1 th:text="${message}">테스트 메세지</h1>
+<div class="frame">
+    <div class="board">
+
+        <!-- 상단 -->
+        <header class="topbar">
+            <div class="brand-mini" th:onclick="|location.href='@{/main/}'|" style="cursor:pointer;">Yummy Yummy</div>
+
+            <nav class="nav" aria-label="Main">
+                <a th:href="@{/menu}"  href="/menu">MENU</a>
+                <a th:href="@{/recipe}" href="/recipe">RECIPE</a>
+                <a th:href="@{/order}" href="/order">ORDER</a>
+            </nav>
+
+            <div th:if="${isLoggedIn}">
+                <span th:text="${loginUser.name}">홍길동</span>
+                <div class="icons">
+                    <!-- cart -->
+                    <a class="icon-btn" th:href="@{/cart}" href="/cart" aria-label="Cart">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M6 6h15l-2 9H7L6 6Z"/>
+                            <path d="M6 6 5 3H2"/>
+                            <circle cx="9" cy="20" r="1"/>
+                            <circle cx="18" cy="20" r="1"/>
+                        </svg>
+                    </a>
+                    <!-- user -->
+                    <a class="icon-btn" th:href="@{/account}" href="/account" aria-label="Account">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <circle cx="12" cy="8" r="3.2"/>
+                            <path d="M4.5 20c1.8-4 13.2-4 15 0"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <a th:if="${!isLoggedIn}" th:href="@{/auth/login}" class="login-btn">LOGIN</a>
+
+        </header>
+
+        <!-- 히어로 -->
+        <section class="hero">
+            <div class="hero-inner">
+
+                <div class="oval-title">
+                    <span class="star">✦</span>
+                    <h1>Yummy Yummy</h1>
+                    <span class="star">✦</span>
+                </div>
+
+                <div class="dessert-wrap">
+                    <!-- 장식용 선/별(이미지 느낌 맞추기) -->
+                    <div class="sparkles" aria-hidden="true">
+                        <svg viewBox="0 0 1000 420">
+                            <!-- 왼쪽 스푼 느낌 라인 -->
+                            <path d="M260 235 C 170 270, 120 240, 85 215"
+                                  stroke="rgba(139,58,43,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M90 215 C 110 195, 140 195, 165 210"
+                                  stroke="rgba(139,58,43,.35)" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+                            <!-- 작은 별들 -->
+                            <path d="M690 190 l6 12 12 6-12 6-6 12-6-12-12-6 12-6z"
+                                  fill="rgba(139,58,43,.55)"/>
+                            <path d="M615 155 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
+                                  fill="rgba(139,58,43,.35)"/>
+                            <path d="M360 310 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
+                                  fill="rgba(139,58,43,.35)"/>
+                        </svg>
+                    </div>
+
+                    <!-- 메인 디저트 이미지: static/images/dessert.png 로 넣어줘 -->
+                    <img class="dessert"
+                         th:src="@{/images/dessert.png}"
+                         src="/images/dessert.png"
+                         alt="Dessert" />
+                </div>
+
+                <p class="hero-copy">
+                    WELCOME TO SWEET TREATS CAFE, WHERE EVERY DESSERT TELLS A STORY. INDULGE IN OUR FRESHLY BAKED PASTRIES, FROM CREAMY CHEESECAKES TO DECADENT CHOCOLATE BROWNIES. WHETHER YOU’RE CRAVING A CLASSIC APPLE PIE OR EXPLORING VEGAN DELIGHTS, OUR MENU OFFERS A DELIGHTFUL EXPERIENCE FOR EVERY PALATE.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- 시즌 메뉴 -->
+        <section class="section">
+            <div class="section-inner">
+
+                <div class="section-title">
+                    <span class="tiny-star">✦</span>
+                    <h2>SEASON MENU</h2>
+                    <span class="tiny-star">✦</span>
+                </div>
+
+                <!--
+                  컨트롤러에서 seasonMenus(List) 내려주면 그대로 반복됨.
+                  예: [{name:'STRAWBERRY CAKE', img:'/images/menu/strawberry-cake.png'}, ...]
+                -->
+                <div class="menu-grid">
+                    <div class="menu-item" th:each="m : ${seasonMenus}">
+                        <img th:src="@{${m.img}}" th:alt="${m.name}" alt="menu"/>
+                        <p class="name" th:text="${m.name}">STRAWBERRY CAKE</p>
+                    </div>
+
+                    <!-- seasonMenus가 없을 때(디폴트 2개) -->
+                    <div class="menu-item" th:if="${seasonMenus == null}">
+                        <img th:src="@{/images/strawberry-basket.png}" src="/images/strawberry-basket.png" alt="Strawberry Cake"/>
+                        <p class="name">STRAWBERRY CAKE</p>
+                    </div>
+                    <div class="menu-item" th:if="${seasonMenus == null}">
+                        <img th:src="@{/images/strawberry-parfait.png}" src="/images/strawberry-parfait.png" alt="Strawberry Parfait"/>
+                        <p class="name">STRAWBERRY PARFAIT</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+</div>
 </body>
 </html>
