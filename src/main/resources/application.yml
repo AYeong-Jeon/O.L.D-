@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8080
   servlet:
     encoding:
       charset: UTF-8
@@ -15,13 +15,38 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     driver-class-name: ${DRIVER_CLASS_NAME}
-    url: jdbc:log4jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:postgresql://${POST_HOST}:${POST_PORT}/${POST_DATABASE}
+    username: ${POST_USER}
+    password: ${POST_PASSWORD}
+    hikari:
+      maximum-pool-size: 10  # 최대 커넥션 개수
+      connection-timeout: 30000 # 커넥션을 얻기 위해 대기하는 최대 시간 (ms)
+      max-lifetime: 1800000 # 커넥션의 최대 수명 (ms)
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
+
+  jpa:
+    hibernate:
+      # ddl-auto: 애플리케이션 실행 시 스키마(테이블) 처리 전략
+      # none: 아무 작업도 하지 않음 (운영 환경 추천)
+      # create: 기존 테이블 삭제 후 다시 생성
+      # update: 변경된 부분만 반영
+      ddl-auto: none
+    properties:
+      hibernate:
+        # postgreSQL 버전에 맞는 Dialect(방언) 설정
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true # Flyway 활성화
+    locations: classpath:/db/migration # 마이그레이션 파일 위치 지정
+    baseline-on-migrate: true
+
+springdoc:
+  swagger-ui:
+    enabled: true
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

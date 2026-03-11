@@ -32,12 +32,6 @@
             color: var(--text);
         }
 
-        /* 화면 전체 프레임(이미지처럼 라운드된 보드) */
-        .frame{
-            max-width: calc(var(--max) + 80px);
-            margin: 28px auto;
-            padding: 0 18px;
-        }
         .board{
             background: var(--paper);
             border: 1px solid rgba(139,58,43,.25);
@@ -350,16 +344,24 @@
                                   stroke="rgba(139,58,43,.35)" stroke-width="2" fill="none" stroke-linecap="round"/>
 
                             <!-- 작은 별들 -->
-                            <path d="M690 190 l6 12 12 6-12 6-6 12-6-12-12-6 12-6z"
+                            <path d="M740 190 l6 12 12 6-12 6-6 12-6-12-12-6 12-6z"
                                   fill="rgba(139,58,43,.55)"/>
-                            <path d="M615 155 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
+                            <path d="M665 155 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
                                   fill="rgba(139,58,43,.35)"/>
-                            <path d="M360 310 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
+                            <path d="M420 310 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
+                                  fill="rgba(139,58,43,.35)"/>
+
+                            <!-- 작은 별들 -->
+                            <path d="M800 160 l6 12 12 6-12 6-6 12-6-12-12-6 12-6z"
+                                  fill="rgba(139,58,43,.55)"/>
+                            <path d="M710 135 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
+                                  fill="rgba(139,58,43,.35)"/>
+                            <path d="M480 180 l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"
                                   fill="rgba(139,58,43,.35)"/>
                         </svg>
                     </div>
 
-                    <!-- 메인 디저트 이미지: static/images/dessert.png 로 넣어줘 -->
+                    <!-- 메인 디저트 이미지 -->
                     <img class="dessert"
                          th:src="@{/images/dessert.png}"
                          src="/images/dessert.png"

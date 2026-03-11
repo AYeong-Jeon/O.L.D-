@@ -23,8 +23,8 @@ public class MainController {
     @GetMapping("/")
     public String mainPage(Model model) {
         List<Map<String, String>> seasonMenus = new ArrayList<>();
-        seasonMenus.add(Map.of("name", "STRAWBERRY CAKE", "img", "/images/menu/strawberry-basket.png"));
-        seasonMenus.add(Map.of("name", "STRAWBERRY PARFAIT", "img", "/images/menu/strawberry-parfait.png"));
+        seasonMenus.add(Map.of("name", "STRAWBERRY CAKE", "img", "/images/strawberry-basket.png"));
+        seasonMenus.add(Map.of("name", "STRAWBERRY PARFAIT", "img", "/images/strawberry-parfait.png"));
         model.addAttribute("seasonMenus", seasonMenus);
 
         model.addAttribute("isLoggedIn", false);
